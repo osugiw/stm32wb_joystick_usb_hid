@@ -1,3 +1,7 @@
+
+Program controlling Mouse Cursor using external Joystick.
+This project is based on STM32Cube_FW_WB_V1.19.0/Projects/P-NUCLEO-WB55.Nucleo/Applications/USB_Device/HID_Standalone
+
 /**
   @page HID_Standalone USB Device Human Interface (HID) application
 
