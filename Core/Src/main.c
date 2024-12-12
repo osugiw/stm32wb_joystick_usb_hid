@@ -35,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ADC_SCAN_RATE	50
+#define ADC_SCAN_RATE	100
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,8 +49,8 @@ DMA_HandleTypeDef hdma_adc1;
 
 /* USER CODE BEGIN PV */
 uint8_t flagDir;
-uint16_t joyStick_X, joyStick_Y;
-uint32_t rawADC[2];
+uint16_t joystick_X, joystick_Y;
+uint32_t rawADC[4];
 uint32_t adc_lastTime = 0;
 /* USER CODE END PV */
 
@@ -65,6 +65,8 @@ static void MX_ADC1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+
 /**
  * @brief ADC DMA callback when buffer is full
  * @param:
@@ -73,8 +75,8 @@ static void MX_ADC1_Init(void);
 **/
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-	joyStick_X = (uint16_t)rawADC[0];
-	joyStick_Y = (uint16_t)rawADC[1];
+	joystick_X = rawADC[0];
+	joystick_Y = rawADC[1];
 }
 /* USER CODE END 0 */
 
@@ -114,7 +116,7 @@ int main(void)
   /* Configure the application hardware resources */
   BSP_PB_Init(BUTTON_KEY1, BUTTON_MODE_EXTI);
   BSP_LED_Init(LED3);
-  HAL_ADC_Start_DMA(&hadc1, rawADC, 2);
+  HAL_ADC_Start_DMA(&hadc1, rawADC, 4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -124,12 +126,12 @@ int main(void)
 	  if(HAL_GetTick() - adc_lastTime > ADC_SCAN_RATE){
 		  adc_lastTime = HAL_GetTick();
 		  flagDir = JOYSTICK_IDLE;
-		  HAL_ADC_Start_DMA(&hadc1, rawADC, 2);
+		  HAL_ADC_Start_DMA(&hadc1, rawADC, 4);
 	  }
 
 	  // Detect user input and control the mouse
 	  JoystickControl();
-	  HAL_Delay(2);
+	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

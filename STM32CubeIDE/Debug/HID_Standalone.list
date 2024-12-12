@@ -15,31 +15,31 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   5 .data         00000134  20000008  0800a21c  0000c008  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .bss          0000073c  2000013c  0800a350  0000c13c  2**2
+  6 .bss          00000744  2000013c  0800a350  0000c13c  2**2
                   ALLOC
-  7 ._user_heap_stack 00002000  20000878  0800a350  0000c878  2**0
+  7 ._user_heap_stack 00002000  20000880  0800a350  0000c880  2**0
                   ALLOC
   8 .ARM.attributes 00000030  00000000  00000000  0000c13c  2**0
                   CONTENTS, READONLY
-  9 .debug_info   00019576  00000000  00000000  0000c16c  2**0
+  9 .debug_info   00019566  00000000  00000000  0000c16c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 00003fb1  00000000  00000000  000256e2  2**0
+ 10 .debug_abbrev 00003fb1  00000000  00000000  000256d2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_aranges 000019c8  00000000  00000000  00029698  2**3
+ 11 .debug_aranges 000019c8  00000000  00000000  00029688  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_rnglists 00001347  00000000  00000000  0002b060  2**0
+ 12 .debug_rnglists 00001347  00000000  00000000  0002b050  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_macro  00025340  00000000  00000000  0002c3a7  2**0
+ 13 .debug_macro  0002536b  00000000  00000000  0002c397  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line   00018f1c  00000000  00000000  000516e7  2**0
+ 14 .debug_line   00018f23  00000000  00000000  00051702  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_str    000e4fbe  00000000  00000000  0006a603  2**0
+ 15 .debug_str    000e5005  00000000  00000000  0006a625  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .comment      00000043  00000000  00000000  0014f5c1  2**0
+ 16 .comment      00000043  00000000  00000000  0014f62a  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00006ad8  00000000  00000000  0014f604  2**2
+ 17 .debug_frame  00006ad8  00000000  00000000  0014f670  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line_str 00000073  00000000  00000000  001560dc  2**0
+ 18 .debug_line_str 00000073  00000000  00000000  00156148  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -153,13 +153,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
  80001e2:	b083      	sub	sp, #12
  80001e4:	af00      	add	r7, sp, #0
  80001e6:	6078      	str	r0, [r7, #4]
-	joyStick_X = (uint16_t)rawADC[0];
+	joystick_X = rawADC[0];
  80001e8:	4b07      	ldr	r3, [pc, #28]	@ (8000208 <HAL_ADC_ConvCpltCallback+0x28>)
  80001ea:	681b      	ldr	r3, [r3, #0]
  80001ec:	b29a      	uxth	r2, r3
  80001ee:	4b07      	ldr	r3, [pc, #28]	@ (800020c <HAL_ADC_ConvCpltCallback+0x2c>)
  80001f0:	801a      	strh	r2, [r3, #0]
-	joyStick_Y = (uint16_t)rawADC[1];
+	joystick_Y = rawADC[1];
  80001f2:	4b05      	ldr	r3, [pc, #20]	@ (8000208 <HAL_ADC_ConvCpltCallback+0x28>)
  80001f4:	685b      	ldr	r3, [r3, #4]
  80001f6:	b29a      	uxth	r2, r3
@@ -220,8 +220,8 @@ int main(void)
   BSP_LED_Init(LED3);
  8000238:	2002      	movs	r0, #2
  800023a:	f001 f813 	bl	8001264 <BSP_LED_Init>
-  HAL_ADC_Start_DMA(&hadc1, rawADC, 2);
- 800023e:	2202      	movs	r2, #2
+  HAL_ADC_Start_DMA(&hadc1, rawADC, 4);
+ 800023e:	2204      	movs	r2, #4
  8000240:	490f      	ldr	r1, [pc, #60]	@ (8000280 <main+0x6c>)
  8000242:	4810      	ldr	r0, [pc, #64]	@ (8000284 <main+0x70>)
  8000244:	f001 fcdc 	bl	8001c00 <HAL_ADC_Start_DMA>
@@ -236,7 +236,7 @@ int main(void)
  800024e:	4b0e      	ldr	r3, [pc, #56]	@ (8000288 <main+0x74>)
  8000250:	681b      	ldr	r3, [r3, #0]
  8000252:	1ad3      	subs	r3, r2, r3
- 8000254:	2b32      	cmp	r3, #50	@ 0x32
+ 8000254:	2b64      	cmp	r3, #100	@ 0x64
  8000256:	d90c      	bls.n	8000272 <main+0x5e>
 		  adc_lastTime = HAL_GetTick();
  8000258:	f001 f94a 	bl	80014f0 <HAL_GetTick>
@@ -247,8 +247,8 @@ int main(void)
  8000262:	4b0a      	ldr	r3, [pc, #40]	@ (800028c <main+0x78>)
  8000264:	2200      	movs	r2, #0
  8000266:	701a      	strb	r2, [r3, #0]
-		  HAL_ADC_Start_DMA(&hadc1, rawADC, 2);
- 8000268:	2202      	movs	r2, #2
+		  HAL_ADC_Start_DMA(&hadc1, rawADC, 4);
+ 8000268:	2204      	movs	r2, #4
  800026a:	4905      	ldr	r1, [pc, #20]	@ (8000280 <main+0x6c>)
  800026c:	4805      	ldr	r0, [pc, #20]	@ (8000284 <main+0x70>)
  800026e:	f001 fcc7 	bl	8001c00 <HAL_ADC_Start_DMA>
@@ -257,15 +257,15 @@ int main(void)
 	  // Detect user input and control the mouse
 	  JoystickControl();
  8000272:	f000 facb 	bl	800080c <JoystickControl>
-	  HAL_Delay(2);
- 8000276:	2002      	movs	r0, #2
+	  HAL_Delay(10);
+ 8000276:	200a      	movs	r0, #10
  8000278:	f000 f8fe 	bl	8000478 <HAL_Delay>
 	  if(HAL_GetTick() - adc_lastTime > ADC_SCAN_RATE){
  800027c:	e7e4      	b.n	8000248 <main+0x34>
  800027e:	bf00      	nop
  8000280:	20000250 	.word	0x20000250
  8000284:	20000158 	.word	0x20000158
- 8000288:	20000258 	.word	0x20000258
+ 8000288:	20000260 	.word	0x20000260
  800028c:	20000248 	.word	0x20000248
 
 08000290 <SystemClock_Config>:
@@ -1077,7 +1077,7 @@ void USB_LP_IRQHandler(void)
  8000632:	bf00      	nop
  8000634:	bd80      	pop	{r7, pc}
  8000636:	bf00      	nop
- 8000638:	20000580 	.word	0x20000580
+ 8000638:	20000588 	.word	0x20000588
 
 0800063c <EXTI4_IRQHandler>:
   * @param  None
@@ -1194,7 +1194,7 @@ LoopForever:
  80006a4:	0800a21c 	.word	0x0800a21c
   INIT_BSS _sbss, _ebss
  80006a8:	2000013c 	.word	0x2000013c
- 80006ac:	20000878 	.word	0x20000878
+ 80006ac:	20000880 	.word	0x20000880
   INIT_BSS _sMB_MEM2, _eMB_MEM2
  80006b0:	20030000 	.word	0x20030000
  80006b4:	20030000 	.word	0x20030000
@@ -1336,7 +1336,7 @@ void USBD_Clock_Config(void)
   * @param  pbuf: Pointer to report
   * @retval None
   */
-void GetPointerData(uint8_t * pbuf, joyStick_dir _dir)
+void GetPointerData(uint8_t * pbuf, joystick_dir _dir)
 {
  8000760:	b480      	push	{r7}
  8000762:	b085      	sub	sp, #20
@@ -1540,7 +1540,7 @@ void JoystickControl(void)
  800087a:	b2db      	uxtb	r3, r3
  800087c:	2b03      	cmp	r3, #3
  800087e:	f040 80a7 	bne.w	80009d0 <JoystickControl+0x1c4>
-		if(joyStick_X >= THR_MOVE_1AXIS_MIN && joyStick_X <= THR_MOVE_1AXIS_MAX){
+		if(joystick_X >= THR_MOVE_1AXIS_MIN && joystick_X <= THR_MOVE_1AXIS_MAX){
  8000882:	4b56      	ldr	r3, [pc, #344]	@ (80009dc <JoystickControl+0x1d0>)
  8000884:	881b      	ldrh	r3, [r3, #0]
  8000886:	f5b3 7ff0 	cmp.w	r3, #480	@ 0x1e0
@@ -1549,7 +1549,7 @@ void JoystickControl(void)
  800088e:	881b      	ldrh	r3, [r3, #0]
  8000890:	f5b3 7ffa 	cmp.w	r3, #500	@ 0x1f4
  8000894:	d822      	bhi.n	80008dc <JoystickControl+0xd0>
-		  if (joyStick_Y < THR_MOVE_UP)
+		  if (joystick_Y < THR_MOVE_UP)
  8000896:	4b52      	ldr	r3, [pc, #328]	@ (80009e0 <JoystickControl+0x1d4>)
  8000898:	881b      	ldrh	r3, [r3, #0]
  800089a:	f5b3 7fc8 	cmp.w	r3, #400	@ 0x190
@@ -1568,7 +1568,7 @@ void JoystickControl(void)
  80008b2:	484e      	ldr	r0, [pc, #312]	@ (80009ec <JoystickControl+0x1e0>)
  80008b4:	f009 faea 	bl	8009e8c <USBD_HID_SendReport>
  80008b8:	e010      	b.n	80008dc <JoystickControl+0xd0>
-		  else if (joyStick_Y > THR_MOVE_DOWN)
+		  else if (joystick_Y > THR_MOVE_DOWN)
  80008ba:	4b49      	ldr	r3, [pc, #292]	@ (80009e0 <JoystickControl+0x1d4>)
  80008bc:	881b      	ldrh	r3, [r3, #0]
  80008be:	f5b3 7f16 	cmp.w	r3, #600	@ 0x258
@@ -1586,7 +1586,7 @@ void JoystickControl(void)
  80008d4:	4944      	ldr	r1, [pc, #272]	@ (80009e8 <JoystickControl+0x1dc>)
  80008d6:	4845      	ldr	r0, [pc, #276]	@ (80009ec <JoystickControl+0x1e0>)
  80008d8:	f009 fad8 	bl	8009e8c <USBD_HID_SendReport>
-		if(joyStick_Y >= THR_MOVE_1AXIS_MIN && joyStick_Y <= THR_MOVE_1AXIS_MAX)
+		if(joystick_Y >= THR_MOVE_1AXIS_MIN && joystick_Y <= THR_MOVE_1AXIS_MAX)
  80008dc:	4b40      	ldr	r3, [pc, #256]	@ (80009e0 <JoystickControl+0x1d4>)
  80008de:	881b      	ldrh	r3, [r3, #0]
  80008e0:	f5b3 7ff0 	cmp.w	r3, #480	@ 0x1e0
@@ -1595,7 +1595,7 @@ void JoystickControl(void)
  80008e8:	881b      	ldrh	r3, [r3, #0]
  80008ea:	f5b3 7ffa 	cmp.w	r3, #500	@ 0x1f4
  80008ee:	d822      	bhi.n	8000936 <JoystickControl+0x12a>
-		  if (joyStick_X < THR_MOVE_LEFT)
+		  if (joystick_X < THR_MOVE_LEFT)
  80008f0:	4b3a      	ldr	r3, [pc, #232]	@ (80009dc <JoystickControl+0x1d0>)
  80008f2:	881b      	ldrh	r3, [r3, #0]
  80008f4:	f5b3 7fc8 	cmp.w	r3, #400	@ 0x190
@@ -1614,7 +1614,7 @@ void JoystickControl(void)
  800090c:	4837      	ldr	r0, [pc, #220]	@ (80009ec <JoystickControl+0x1e0>)
  800090e:	f009 fabd 	bl	8009e8c <USBD_HID_SendReport>
  8000912:	e010      	b.n	8000936 <JoystickControl+0x12a>
-		  else if (joyStick_X > THR_MOVE_RIGHT)
+		  else if (joystick_X > THR_MOVE_RIGHT)
  8000914:	4b31      	ldr	r3, [pc, #196]	@ (80009dc <JoystickControl+0x1d0>)
  8000916:	881b      	ldrh	r3, [r3, #0]
  8000918:	f5b3 7f16 	cmp.w	r3, #600	@ 0x258
@@ -1632,12 +1632,12 @@ void JoystickControl(void)
  800092e:	492e      	ldr	r1, [pc, #184]	@ (80009e8 <JoystickControl+0x1dc>)
  8000930:	482e      	ldr	r0, [pc, #184]	@ (80009ec <JoystickControl+0x1e0>)
  8000932:	f009 faab 	bl	8009e8c <USBD_HID_SendReport>
-		if(joyStick_X >= THR_MOVE_Q14_X){
+		if(joystick_X >= THR_MOVE_Q14_X){
  8000936:	4b29      	ldr	r3, [pc, #164]	@ (80009dc <JoystickControl+0x1d0>)
  8000938:	881b      	ldrh	r3, [r3, #0]
  800093a:	f5b3 7f61 	cmp.w	r3, #900	@ 0x384
  800093e:	d321      	bcc.n	8000984 <JoystickControl+0x178>
-		  if(joyStick_Y <= THR_MOVE_Q1_Y){
+		  if(joystick_Y <= THR_MOVE_Q1_Y){
  8000940:	4b27      	ldr	r3, [pc, #156]	@ (80009e0 <JoystickControl+0x1d4>)
  8000942:	881b      	ldrh	r3, [r3, #0]
  8000944:	2b64      	cmp	r3, #100	@ 0x64
@@ -1656,7 +1656,7 @@ void JoystickControl(void)
  800095a:	4824      	ldr	r0, [pc, #144]	@ (80009ec <JoystickControl+0x1e0>)
  800095c:	f009 fa96 	bl	8009e8c <USBD_HID_SendReport>
  8000960:	e010      	b.n	8000984 <JoystickControl+0x178>
-		  else if(joyStick_Y >= THR_MOVE_Q4_Y){
+		  else if(joystick_Y >= THR_MOVE_Q4_Y){
  8000962:	4b1f      	ldr	r3, [pc, #124]	@ (80009e0 <JoystickControl+0x1d4>)
  8000964:	881b      	ldrh	r3, [r3, #0]
  8000966:	f5b3 7f61 	cmp.w	r3, #900	@ 0x384
@@ -1674,12 +1674,12 @@ void JoystickControl(void)
  800097c:	491a      	ldr	r1, [pc, #104]	@ (80009e8 <JoystickControl+0x1dc>)
  800097e:	481b      	ldr	r0, [pc, #108]	@ (80009ec <JoystickControl+0x1e0>)
  8000980:	f009 fa84 	bl	8009e8c <USBD_HID_SendReport>
-		if(joyStick_X <= THR_MOVE_Q23_X){
+		if(joystick_X <= THR_MOVE_Q23_X){
  8000984:	4b15      	ldr	r3, [pc, #84]	@ (80009dc <JoystickControl+0x1d0>)
  8000986:	881b      	ldrh	r3, [r3, #0]
  8000988:	2b64      	cmp	r3, #100	@ 0x64
  800098a:	d821      	bhi.n	80009d0 <JoystickControl+0x1c4>
-		  if(joyStick_Y <= THR_MOVE_Q2_Y){
+		  if(joystick_Y <= THR_MOVE_Q2_Y){
  800098c:	4b14      	ldr	r3, [pc, #80]	@ (80009e0 <JoystickControl+0x1d4>)
  800098e:	881b      	ldrh	r3, [r3, #0]
  8000990:	2b64      	cmp	r3, #100	@ 0x64
@@ -1699,7 +1699,7 @@ void JoystickControl(void)
  80009a8:	f009 fa70 	bl	8009e8c <USBD_HID_SendReport>
 }
  80009ac:	e010      	b.n	80009d0 <JoystickControl+0x1c4>
-		  else if(joyStick_Y >= THR_MOVE_Q3_Y){
+		  else if(joystick_Y >= THR_MOVE_Q3_Y){
  80009ae:	4b0c      	ldr	r3, [pc, #48]	@ (80009e0 <JoystickControl+0x1d4>)
  80009b0:	881b      	ldrh	r3, [r3, #0]
  80009b2:	f5b3 7f61 	cmp.w	r3, #900	@ 0x384
@@ -1720,13 +1720,13 @@ void JoystickControl(void)
 }
  80009d0:	bf00      	nop
  80009d2:	bd80      	pop	{r7, pc}
- 80009d4:	20000580 	.word	0x20000580
- 80009d8:	2000025c 	.word	0x2000025c
+ 80009d4:	20000588 	.word	0x20000588
+ 80009d8:	20000264 	.word	0x20000264
  80009dc:	2000024a 	.word	0x2000024a
  80009e0:	2000024c 	.word	0x2000024c
  80009e4:	20000248 	.word	0x20000248
- 80009e8:	20000260 	.word	0x20000260
- 80009ec:	20000264 	.word	0x20000264
+ 80009e8:	20000268 	.word	0x20000268
+ 80009ec:	2000026c 	.word	0x2000026c
 
 080009f0 <MX_USB_Device_Init>:
 /**
@@ -1782,7 +1782,7 @@ void MX_USB_Device_Init(void)
  8000a30:	bd80      	pop	{r7, pc}
  8000a32:	bf00      	nop
  8000a34:	20000008 	.word	0x20000008
- 8000a38:	20000264 	.word	0x20000264
+ 8000a38:	2000026c 	.word	0x2000026c
  8000a3c:	2000007c 	.word	0x2000007c
 
 08000a40 <USBD_HID_DeviceDescriptor>:
@@ -1882,7 +1882,7 @@ uint8_t * USBD_HID_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *lengt
  8000ab6:	46bd      	mov	sp, r7
  8000ab8:	bd80      	pop	{r7, pc}
  8000aba:	bf00      	nop
- 8000abc:	20000540 	.word	0x20000540
+ 8000abc:	20000548 	.word	0x20000548
  8000ac0:	0800a10c 	.word	0x0800a10c
 
 08000ac4 <USBD_HID_ManufacturerStrDescriptor>:
@@ -1911,7 +1911,7 @@ uint8_t * USBD_HID_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *
  8000ade:	3708      	adds	r7, #8
  8000ae0:	46bd      	mov	sp, r7
  8000ae2:	bd80      	pop	{r7, pc}
- 8000ae4:	20000540 	.word	0x20000540
+ 8000ae4:	20000548 	.word	0x20000548
  8000ae8:	0800a124 	.word	0x0800a124
 
 08000aec <USBD_HID_SerialStrDescriptor>:
@@ -1992,7 +1992,7 @@ uint8_t * USBD_HID_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
  8000b3e:	46bd      	mov	sp, r7
  8000b40:	bd80      	pop	{r7, pc}
  8000b42:	bf00      	nop
- 8000b44:	20000540 	.word	0x20000540
+ 8000b44:	20000548 	.word	0x20000548
  8000b48:	0800a138 	.word	0x0800a138
 
 08000b4c <USBD_HID_InterfaceStrDescriptor>:
@@ -2036,7 +2036,7 @@ uint8_t * USBD_HID_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *len
  8000b7a:	46bd      	mov	sp, r7
  8000b7c:	bd80      	pop	{r7, pc}
  8000b7e:	bf00      	nop
- 8000b80:	20000540 	.word	0x20000540
+ 8000b80:	20000548 	.word	0x20000548
  8000b84:	0800a144 	.word	0x0800a144
 
 08000b88 <Get_SerialNum>:
@@ -2737,7 +2737,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
  8000f32:	46bd      	mov	sp, r7
  8000f34:	bd80      	pop	{r7, pc}
  8000f36:	bf00      	nop
- 8000f38:	20000580 	.word	0x20000580
+ 8000f38:	20000588 	.word	0x20000588
  8000f3c:	40006800 	.word	0x40006800
 
 08000f40 <USBD_LL_Start>:
@@ -3187,7 +3187,7 @@ void *USBD_static_malloc(uint32_t size)
  80011a8:	f85d 7b04 	ldr.w	r7, [sp], #4
  80011ac:	4770      	bx	lr
  80011ae:	bf00      	nop
- 80011b0:	2000085c 	.word	0x2000085c
+ 80011b0:	20000864 	.word	0x20000864
 
 080011b4 <USBD_static_free>:
   * @brief  Dummy memory free
@@ -3769,7 +3769,7 @@ __weak void HAL_IncTick(void)
  80014e4:	4770      	bx	lr
  80014e6:	bf00      	nop
  80014e8:	20000078 	.word	0x20000078
- 80014ec:	20000870 	.word	0x20000870
+ 80014ec:	20000878 	.word	0x20000878
 
 080014f0 <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -3789,7 +3789,7 @@ __weak uint32_t HAL_GetTick(void)
  80014fc:	f85d 7b04 	ldr.w	r7, [sp], #4
  8001500:	4770      	bx	lr
  8001502:	bf00      	nop
- 8001504:	20000870 	.word	0x20000870
+ 8001504:	20000878 	.word	0x20000878
 
 08001508 <HAL_GetTickPrio>:
 /**
@@ -23901,7 +23901,7 @@ static USBD_StatusTypeDef USBD_SetConfig(USBD_HandleTypeDef *pdev, USBD_SetupReq
  8009856:	46bd      	mov	sp, r7
  8009858:	bd80      	pop	{r7, pc}
  800985a:	bf00      	nop
- 800985c:	20000874 	.word	0x20000874
+ 800985c:	2000087c 	.word	0x2000087c
 
 08009860 <USBD_GetConfig>:
   * @param  pdev: device instance

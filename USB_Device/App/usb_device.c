@@ -27,20 +27,21 @@
 
 /* USER CODE BEGIN Includes */
 #include "main.h"
+#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 __IO uint32_t remotewakeupon = 0;
-uint8_t HID_Buffer[4];
 extern PCD_HandleTypeDef hpcd_USB_FS;
-
+uint8_t HID_Buffer[4];
 /* USER CODE END PV */
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 extern void SystemClockConfig_Resume(void);
 void USBD_Clock_Config(void);
+void GetPointerData(uint8_t *pbuf, joystick_dir _dir);
 /* USER CODE END PFP */
 
 extern void Error_Handler(void);
@@ -102,7 +103,7 @@ void USBD_Clock_Config(void)
   * @param  pbuf: Pointer to report
   * @retval None
   */
-void GetPointerData(uint8_t * pbuf, joyStick_dir _dir)
+void GetPointerData(uint8_t * pbuf, joystick_dir _dir)
 {
   int8_t x = 0, y = 0;
 
@@ -175,16 +176,16 @@ void JoystickControl(void)
 	}
 	else if (((USBD_HandleTypeDef *) hpcd_USB_FS.pData)->dev_state == USBD_STATE_CONFIGURED){
 		// Vertical
-		if(joyStick_X >= THR_MOVE_1AXIS_MIN && joyStick_X <= THR_MOVE_1AXIS_MAX){
+		if(joystick_X >= THR_MOVE_1AXIS_MIN && joystick_X <= THR_MOVE_1AXIS_MAX){
 		  // Up
-		  if (joyStick_Y < THR_MOVE_UP)
+		  if (joystick_Y < THR_MOVE_UP)
 		  {
 			  flagDir = JOYSTICK_UP;
 			  GetPointerData(HID_Buffer, JOYSTICK_UP);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);
 		  }
 		  // Down
-		  else if (joyStick_Y > THR_MOVE_DOWN)
+		  else if (joystick_Y > THR_MOVE_DOWN)
 		  {
 			  flagDir = JOYSTICK_DOWN;
 			  GetPointerData(HID_Buffer, JOYSTICK_DOWN);
@@ -193,17 +194,17 @@ void JoystickControl(void)
 		}
 
 		// Horizontal
-		if(joyStick_Y >= THR_MOVE_1AXIS_MIN && joyStick_Y <= THR_MOVE_1AXIS_MAX)
+		if(joystick_Y >= THR_MOVE_1AXIS_MIN && joystick_Y <= THR_MOVE_1AXIS_MAX)
 		{
 		  // Left
-		  if (joyStick_X < THR_MOVE_LEFT)
+		  if (joystick_X < THR_MOVE_LEFT)
 		  {
 			  flagDir = JOYSTICK_LEFT;
 			  GetPointerData(HID_Buffer, JOYSTICK_LEFT);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);
 		  }
 		  // Right
-		  else if (joyStick_X > THR_MOVE_RIGHT)
+		  else if (joystick_X > THR_MOVE_RIGHT)
 		  {
 			  flagDir = JOYSTICK_RIGHT;
 			  GetPointerData(HID_Buffer, JOYSTICK_RIGHT);
@@ -212,15 +213,15 @@ void JoystickControl(void)
 		}
 
 		// Quadrant 1 and 4
-		if(joyStick_X >= THR_MOVE_Q14_X){
+		if(joystick_X >= THR_MOVE_Q14_X){
 		  // Up-right
-		  if(joyStick_Y <= THR_MOVE_Q1_Y){
+		  if(joystick_Y <= THR_MOVE_Q1_Y){
 			  flagDir = JOYSTICK_UP_RIGHT;
 			  GetPointerData(HID_Buffer, JOYSTICK_UP_RIGHT);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);
 		  }
 		  // Down-right
-		  else if(joyStick_Y >= THR_MOVE_Q4_Y){
+		  else if(joystick_Y >= THR_MOVE_Q4_Y){
 			  flagDir = JOYSTICK_DOWN_RIGHT;
 			  GetPointerData(HID_Buffer, JOYSTICK_DOWN_RIGHT);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);
@@ -228,15 +229,15 @@ void JoystickControl(void)
 		}
 
 		// Quadrant 2 and 3
-		if(joyStick_X <= THR_MOVE_Q23_X){
+		if(joystick_X <= THR_MOVE_Q23_X){
 		  // Up-left
-		  if(joyStick_Y <= THR_MOVE_Q2_Y){
+		  if(joystick_Y <= THR_MOVE_Q2_Y){
 			  flagDir = JOYSTICK_UP_LEFT;
 			  GetPointerData(HID_Buffer, JOYSTICK_UP_LEFT);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);
 		  }
 		  // Down-left
-		  else if(joyStick_Y >= THR_MOVE_Q3_Y){
+		  else if(joystick_Y >= THR_MOVE_Q3_Y){
 			  flagDir = JOYSTICK_DOWN_LEFT;
 			  GetPointerData(HID_Buffer, JOYSTICK_DOWN_LEFT);
 			  USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, 4);

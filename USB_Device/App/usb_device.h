@@ -61,14 +61,16 @@ typedef enum{
 	JOYSTICK_RIGHT,
 	JOYSTICK_UP_RIGHT,
 	JOYSTICK_DOWN_RIGHT,
-} joyStick_dir;
+} joystick_dir;
 
-
-/* USER CODE END PV */
+typedef enum{
+	LEFT_SWITCH,
+	RIGHT_SWITCH,
+	MIDDLE_SWITCH,
+} joystick_switch;
 
 // Mouse Cursor Step
 #define CURSOR_STEP     2
-
 
 // 1 Axis thresholds
 #define THR_MOVE_1AXIS_MIN 	480
@@ -85,6 +87,8 @@ typedef enum{
 #define THR_MOVE_Q23_X		100
 #define THR_MOVE_Q2_Y		THR_MOVE_Q1_Y
 #define THR_MOVE_Q3_Y		THR_MOVE_Q4_Y
+/* USER CODE END PV */
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 
@@ -112,8 +116,8 @@ void MX_USB_Device_Init(void);
  * -- Insert functions declaration here --
  */
 /* USER CODE BEGIN FD */
-void GetPointerData(uint8_t *pbuf, joyStick_dir _dir);
 void JoystickControl(void);
+void detect_switch(void);
 /* USER CODE END FD */
 /**
   * @}

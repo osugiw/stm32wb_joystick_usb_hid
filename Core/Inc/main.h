@@ -37,7 +37,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 extern uint8_t flagDir;
-extern uint16_t joyStick_X, joyStick_Y;
+extern uint16_t joystick_X, joystick_Y;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

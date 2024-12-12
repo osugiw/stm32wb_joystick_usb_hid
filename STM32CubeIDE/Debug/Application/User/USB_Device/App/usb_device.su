@@ -1,5 +1,5 @@
 ../../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_bus.h:939:22:LL_APB1_GRP1_EnableClock	24	static
-D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:59:6:USBD_Clock_Config	104	static
-D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:105:6:GetPointerData	24	static
-D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:151:6:JoystickControl	8	static
-D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:254:6:MX_USB_Device_Init	8	static
+D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:60:6:USBD_Clock_Config	104	static
+D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:106:6:GetPointerData	24	static
+D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:152:6:JoystickControl	8	static
+D:/Self-Learning/learn-stm32/HID_Standalone/USB_Device/App/usb_device.c:255:6:MX_USB_Device_Init	8	static
